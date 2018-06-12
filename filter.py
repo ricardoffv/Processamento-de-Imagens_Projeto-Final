@@ -140,13 +140,17 @@ def laplacian(img):
     
     #creating the laplacian filter
     laplacianFilter = np.zeros([M,N])
-    laplacianFilter[0][1] = laplacianFilter[1][0] = laplacianFilter[1][2] = laplacianFilter[2][1] = 1
-    laplacianFilter[1][1] = -4
-    
+    #laplacianFilter[0][1] = laplacianFilter[1][0] = laplacianFilter[1][2] = laplacianFilter[2][1] = 1
+    #laplacianFilter[1][1] = -4
+    laplacianFilter[0][2] = laplacianFilter[1][1] = laplacianFilter[1][3] = laplacianFilter[2][0] = laplacianFilter[2][4] = laplacianFilter[3][1] = laplacianFilter[3][3] = laplacianFilter[4][2] = 1
+
+    laplacianFilter[1][2] = laplacianFilter[2][1] = laplacianFilter[2][3] = laplacianFilter[3][2] = 2
+    laplacianFilter[2][2] = -16
+
     #Temporary image
     tempImage = convolution(img,laplacianFilter)
 
-    return img + np.uint8(laplacianParameter*tempImage)
+    return tempImage#np.uint8(laplacianParameter*tempImage)
 
 
 #Sharpening with high boost
@@ -180,4 +184,8 @@ def sobel(img):
     Fx = convolution(img,Fx)
     Fy = convolution(img,Fy)
 
-    return np.uint8(np.sqrt(np.uint8(np.power(Fx,2)) + np.uint8(np.power(Fy,2))))
+    #convert
+    Fx = np.float64(Fx)
+    Fy = np.float64(Fy)
+    
+    return np.uint8(np.sqrt(np.power(Fx,2) + np.power(Fy,2)))
