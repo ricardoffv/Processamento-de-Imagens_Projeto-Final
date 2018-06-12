@@ -12,9 +12,17 @@ As imagens do dataset foram obtidas no site [FutWiz](https://www.futwiz.com/en/f
 Tomando como base a discussão realizada com o professor, o livro Processamento Digital De Imagens - 3ª Ed. - 2011 gonzalez,Rafael C.; Woods,Richard E, e os slides da disciplina a solução do problema será definida nas seguintes etapas:
 
 ### Pré-processamento 
-Como provavelmente as fotos tiradas pelo usuário não estarão em boas condições de luz, já que, o mesmo não está em um ambiente controlado, será necessário realizar uma etapa de pré-processamento que visa melhorar a qualidade da imagem para comparação. As seguintes técnicas serão testadas:
-* Funções básicas de transformação de intensidade - Seção 3.2
-* Processamento de histograma - Seção 3.3
+Como provavelmente as fotos tiradas pelo usuário não estarão em boas condições de luz, já que, o mesmo não está em um ambiente controlado, será necessário realizar uma etapa de pré-processamento que visa melhorar a qualidade da imagem para comparação. Além disso, esta etapa é necessária para que a imagem tenha melhores condições de ser processada na etapa de segmentação. As seguintes técnicas foram implementadas:
+
+* Ajuste de intensidade:
+Ajuste gamma
+Equalização de histograma
+* Suavização:
+Filtro da média
+* Aguçamento:
+Laplaciano da gaussiana
+Operador Sobel
+High Boost
 
 ### Detecção/segmentação da face
 Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmentação da face com a finalidade de retirar o fundo da imagem. Para isso as seguintes técnicas serão testadas:
@@ -23,9 +31,9 @@ Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmenta
 * Segmentação de imagens - Capitulo 10
 
 ### Redimensionamento 
-Como as imagens do usuário terão uma resolução diferente comparada à da base de dados, é necessário realizar um redimensionamento das mesmas. Para isso pensa-se testar:
-* Filtro da média tentando realizar uma compreensão.
-* Interpolação dos pixels.
+Como as imagens do usuário terão uma resolução diferente comparada à da base de dados, é necessário realizar um redimensionamento das mesmas. Os seguintes passos são realizados para tal:
+1)A imagem é recortada em altura e largura para que suas dimensões sejam proporcionais a 160 (altura e largura das imagens da base de dados)
+2)Com um filtro, realiza-se uma média dos pixels de modo que há um mapeamento de vários pixels da imagem original para a redimensionada.
 
 ### Extração de características 
 Com todas as outras etapas anteriores concluídas podemos extrair as características necessárias para posterior comparação. Testaremos as seguintes técnicas:
