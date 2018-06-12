@@ -26,11 +26,11 @@ def readImage():
 img = readImage();
 
 #Pre-processing
-img = filter.smoothing(img);
+#img = filter.smoothing(img);
 #img = filter.gammaAdjustment(img);
 #img = filter.histogramEqualizing(img);
-#img = filter.laplacian(img);
 #img = filter.highBoost(img);
+img = filter.laplacianOfGaussian(img);
 #img = filter.sobel(img);
 
 #Resizes image

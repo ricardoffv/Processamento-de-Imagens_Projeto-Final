@@ -14,6 +14,11 @@ sizeMeanFilter = 5
 #Size of sobel filter applied in sharpening
 sizeSobelFilter = 3
 
+#Size of log filter applied in sharpening
+sizeLogFilter = 5
+
+#Sigma of Log
+sigmaLog = 1.6
 
 #parameter that is used in gamma adjustment
 gamma = 0.7
@@ -130,28 +135,27 @@ def smoothing(img):
             meanFilter[i][j] = 1/(sizeMeanFilter*sizeMeanFilter)
     
     return convolution(img,meanFilter)
-   
-#Sharpening with laplacian
-def laplacian(img):
+
+#Apply the equation of log
+def log(x,y):
+    return (-1/(np.pi*np.power(sigmaLog,4))) * (1-((np.power(x,2)+np.power(y,2))/(2*np.power(sigmaLog,2))))* (np.exp((-np.power(x,2)-np.power(y,2))/(2*np.power(sigmaLog,2)))) 
+
+#Sharpening with laplacian of gaussian
+def laplacianOfGaussian(img):
     
     #Dimension of image
     M = img.shape[0]
     N = img.shape[1]
     
-    #creating the laplacian filter
+    #create filter
     laplacianFilter = np.zeros([M,N])
-    #laplacianFilter[0][1] = laplacianFilter[1][0] = laplacianFilter[1][2] = laplacianFilter[2][1] = 1
-    #laplacianFilter[1][1] = -4
-    laplacianFilter[0][2] = laplacianFilter[1][1] = laplacianFilter[1][3] = laplacianFilter[2][0] = laplacianFilter[2][4] = laplacianFilter[3][1] = laplacianFilter[3][3] = laplacianFilter[4][2] = 1
+    a = (sizeLogFilter-1/2)
+    b = (sizeLogFilter-1/2)
+    for i in range(sizeLogFilter):
+        for j in range(sizeLogFilter):
+            laplacianFilter[i][j] = log(i-a,j-b)  
 
-    laplacianFilter[1][2] = laplacianFilter[2][1] = laplacianFilter[2][3] = laplacianFilter[3][2] = 2
-    laplacianFilter[2][2] = -16
-
-    #Temporary image
-    tempImage = convolution(img,laplacianFilter)
-
-    return tempImage#np.uint8(laplacianParameter*tempImage)
-
+    return convolution(img,laplacianFilter)
 
 #Sharpening with high boost
 def highBoost(img):
