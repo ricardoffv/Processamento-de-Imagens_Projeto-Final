@@ -36,8 +36,8 @@ Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmenta
 ### Redimensionamento 
 Como as imagens do usuário terão uma resolução diferente comparada à da base de dados, é necessário realizar um redimensionamento das mesmas. Os seguintes passos são realizados para tal:
 
-* A imagem é recortada em altura e largura para que suas dimensões sejam proporcionais a 160 pixels (altura e largura das imagens da base de dados)
-* Com um filtro, realiza-se uma média dos pixels de modo que há um mapeamento de vários pixels da imagem original para a redimensionada
+1. A imagem é recortada em altura e largura para que suas dimensões sejam proporcionais a 160 pixels (altura e largura das imagens da base de dados)
+2. Com um filtro, realiza-se uma média dos pixels de modo que há um mapeamento de vários pixels da imagem original para a redimensionada
 
 ### Extração de características 
 Com todas as outras etapas anteriores concluídas podemos extrair as características necessárias para posterior comparação. Testaremos as seguintes técnicas:
