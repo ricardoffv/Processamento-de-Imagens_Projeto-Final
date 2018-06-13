@@ -23,10 +23,7 @@ sigmaLog = 1.6
 #parameter that is used in gamma adjustment
 gamma = 0.7
 
-#parameter that us used in laplacian
-laplacianParameter = -1
-
-#parameter that us used in laplacian
+#parameter that us used in highBoost
 highBoostParameter = 1
 
 #Improve the enhancement of image using histogram equalizing
@@ -156,6 +153,21 @@ def laplacianOfGaussian(img):
             laplacianFilter[i][j] = log(i-a,j-b)  
 
     return convolution(img,laplacianFilter)
+
+#Sharpening with arbitrary filter
+def filtering(img,arbitraryFilter):
+    
+    #Dimension of image
+    M = img.shape[0]
+    N = img.shape[1]
+
+    #Create filter
+    tempFilter = np.zeros([M,N])
+    for i in range(arbitraryFilter.shape[0]):
+        for j in range(arbitraryFilter.shape[1]):
+            tempFilter[i][j] = arbitraryFilter[i][j] 
+
+    return convolution(img,tempFilter)
 
 #Sharpening with high boost
 def highBoost(img):

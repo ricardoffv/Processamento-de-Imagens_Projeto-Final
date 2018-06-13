@@ -30,7 +30,9 @@ img = readImage();
 #img = filter.gammaAdjustment(img);
 #img = filter.histogramEqualizing(img);
 #img = filter.highBoost(img);
-img = filter.laplacianOfGaussian(img);
+#arbitraryFilter = np.ones([3,3])/9
+#img = filter.filtering(img,arbitraryFilter);
+#img = filter.laplacianOfGaussian(img);
 #img = filter.sobel(img);
 
 #Resizes image
@@ -38,4 +40,3 @@ img = filter.laplacianOfGaussian(img);
 
 #Write image
 imageio.imwrite('res.jpg',img)
-#plt.imshow(img)
