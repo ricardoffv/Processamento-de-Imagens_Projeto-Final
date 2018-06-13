@@ -25,18 +25,16 @@ def readImage():
 #Called for function that reads the image
 img = readImage();
 
-#Pre-processing
+#Pre-processing - Improving the image
 #img = filter.smoothing(img);
-#img = filter.gammaAdjustment(img);
 #img = filter.histogramEqualizing(img);
-#img = filter.highBoost(img);
-#arbitraryFilter = np.ones([3,3])/9
-#img = filter.filtering(img,arbitraryFilter);
+
+#Pre-processing - Edge enhancement
 #img = filter.laplacianOfGaussian(img);
 #img = filter.sobel(img);
 
 #Resizes image
-#img = resize.resize(img)
+img = resize.resize(img)
 
 #Write image
-imageio.imwrite('res.jpg',img)
+imageio.imwrite('out.jpg',img)

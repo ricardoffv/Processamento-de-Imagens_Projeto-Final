@@ -9,7 +9,7 @@ import numpy as np
 import imageio
 
 #Size of mean filter applied in smoothing
-sizeMeanFilter = 5
+sizeMeanFilter = 9
 
 #Size of sobel filter applied in sharpening
 sizeSobelFilter = 3
@@ -24,7 +24,7 @@ sigmaLog = 1.6
 gamma = 0.7
 
 #parameter that us used in highBoost
-highBoostParameter = 1
+highBoostParameter = 2
 
 #Improve the enhancement of image using histogram equalizing
 def histogramEqualizing(img):
@@ -152,22 +152,7 @@ def laplacianOfGaussian(img):
         for j in range(sizeLogFilter):
             laplacianFilter[i][j] = log(i-a,j-b)  
 
-    return convolution(img,laplacianFilter)
-
-#Sharpening with arbitrary filter
-def filtering(img,arbitraryFilter):
-    
-    #Dimension of image
-    M = img.shape[0]
-    N = img.shape[1]
-
-    #Create filter
-    tempFilter = np.zeros([M,N])
-    for i in range(arbitraryFilter.shape[0]):
-        for j in range(arbitraryFilter.shape[1]):
-            tempFilter[i][j] = arbitraryFilter[i][j] 
-
-    return convolution(img,tempFilter)
+    return img + convolution(img,laplacianFilter)
 
 #Sharpening with high boost
 def highBoost(img):
@@ -189,12 +174,13 @@ def sobel(img):
     N = img.shape[1]
     
     #Create the two filters
-    Fx = np.zeros([M,N])
+    Fx = np.zeros([M,N]) 
     Fx[0][0] = Fx[2][0] = 1
     Fx[1][0] = 2
     Fx[0][2] = Fx[2][2] = -1
     Fx[1][2] = -2
-    Fy = np.transpose(Fx)
+    Fy = np.zeros([M,N])
+    Fy[0:3,0:3] = np.transpose(Fx[0:3,0:3])
     
     #Apply convolution
     Fx = convolution(img,Fx)
@@ -204,4 +190,4 @@ def sobel(img):
     Fx = np.float64(Fx)
     Fy = np.float64(Fy)
     
-    return np.uint8(np.sqrt(np.power(Fx,2) + np.power(Fy,2)))
+    return img + np.uint8(np.sqrt(np.power(Fx,2) + np.power(Fy,2)))
