@@ -10,6 +10,7 @@ import imageio
 import matplotlib.pyplot as plt
 import filter
 import resize
+import segmentation
 
 #Read the input image
 def readImage():
@@ -25,16 +26,26 @@ def readImage():
 #Called for function that reads the image
 img = readImage();
 
+#temp image
+tmpImage = np.copy(img)
+
 #Pre-processing - Improving the image
-#img = filter.smoothing(img);
-#img = filter.histogramEqualizing(img);
+tmpImage = filter.smoothing(tmpImage);
+tmpImage = filter.histogramEqualizing(tmpImage);
 
 #Pre-processing - Edge enhancement
-#img = filter.laplacianOfGaussian(img);
-#img = filter.sobel(img);
+#tmpImage = filter.laplacianOfGaussian(tmpImage);
+img = filter.sobel(img);
 
 #Resizes image
+tmpImage = resize.resize(tmpImage)
 img = resize.resize(img)
+
+#Segmentation image
+tmpImage = segmentation.segmentation(tmpImage);
+
+#Apply the mask
+img = np.multiply(tmpImage,img)
 
 #Write image
 imageio.imwrite('out.jpg',img)

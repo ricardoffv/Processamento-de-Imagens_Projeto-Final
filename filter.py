@@ -9,7 +9,7 @@ import numpy as np
 import imageio
 
 #Size of mean filter applied in smoothing
-sizeMeanFilter = 9
+sizeMeanFilter = 23
 
 #Size of sobel filter applied in sharpening
 sizeSobelFilter = 3
