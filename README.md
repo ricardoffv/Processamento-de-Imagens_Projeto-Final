@@ -25,7 +25,7 @@ Como provavelmente as fotos tiradas pelo usuário não estarão em boas condiç�
   - High Boost
   - Filtering (Aceita qualquer filtro para convolução)
   
-Tais técnicas serão combinadas e testadas na fase de segmentação, sendo que o melhor conjunto será utilizado.
+Tais técnicas serão combinadas e testadas, sendo que o melhor conjunto será utilizado.
 
 ### Detecção/segmentação da face
 Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmentação da face com a finalidade de retirar o fundo da imagem. Para isso as seguintes técnicas serão testadas:
