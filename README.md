@@ -15,14 +15,17 @@ Tomando como base a discussão realizada com o professor, o livro Processamento 
 Como provavelmente as fotos tiradas pelo usuário não estarão em boas condições de luz, já que, o mesmo não está em um ambiente controlado, será necessário realizar uma etapa de pré-processamento que visa melhorar a qualidade da imagem para comparação. Além disso, esta etapa é necessária para que a imagem tenha melhores condições de ser processada na etapa de segmentação. As seguintes técnicas foram implementadas:
 
 * Ajuste de intensidade:
-Ajuste gamma
-Equalização de histograma
+  - Ajuste gamma
+  - Equalização de histograma
 * Suavização:
-Filtro da média
+  - Filtro da média
 * Aguçamento:
-Laplaciano da gaussiana
-Operador Sobel
-High Boost
+  - Laplaciano da gaussiana
+  - Operador Sobel
+  - High Boost
+  - Filtering (Aceita qualquer filtro para convolução)
+  
+Tais técnicas serão combinadas e testadas na fase de segmentação, sendo que o melhor conjunto será utilizado.
 
 ### Detecção/segmentação da face
 Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmentação da face com a finalidade de retirar o fundo da imagem. Para isso as seguintes técnicas serão testadas:
@@ -32,8 +35,9 @@ Após ter a imagem em uma qualidade boa, será realizada uma detecção/segmenta
 
 ### Redimensionamento 
 Como as imagens do usuário terão uma resolução diferente comparada à da base de dados, é necessário realizar um redimensionamento das mesmas. Os seguintes passos são realizados para tal:
-1)A imagem é recortada em altura e largura para que suas dimensões sejam proporcionais a 160 (altura e largura das imagens da base de dados)
-2)Com um filtro, realiza-se uma média dos pixels de modo que há um mapeamento de vários pixels da imagem original para a redimensionada.
+
+* A imagem é recortada em altura e largura para que suas dimensões sejam proporcionais a 160 pixels (altura e largura das imagens da base de dados)
+* Com um filtro, realiza-se uma média dos pixels de modo que há um mapeamento de vários pixels da imagem original para a redimensionada
 
 ### Extração de características 
 Com todas as outras etapas anteriores concluídas podemos extrair as características necessárias para posterior comparação. Testaremos as seguintes técnicas:
