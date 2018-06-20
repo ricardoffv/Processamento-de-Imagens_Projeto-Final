@@ -16,26 +16,26 @@ import segmentation
 def readImage():
     
     #Read the name of image
-    nameImage = str(input()).rstrip();
+    nameImage = str(input()).rstrip()
     
     #Read the image
-    img = imageio.imread(nameImage); 
+    img = imageio.imread(nameImage)
 
-    return img;
+    return img
 
 #Called for function that reads the image
-img = readImage();
+img = readImage()
 
 #temp image
 tmpImage = np.copy(img)
 
 #Pre-processing - Improving the image
-tmpImage = filter.smoothing(tmpImage);
-tmpImage = filter.histogramEqualizing(tmpImage);
+tmpImage = filter.smoothing(tmpImage)
+tmpImage = filter.histogramEqualizing(tmpImage)
 
 #Pre-processing - Edge enhancement
 #tmpImage = filter.laplacianOfGaussian(tmpImage);
-img = filter.sobel(img);
+img = filter.sobel(img)
 
 #Resizes image
 tmpImage = resize.resize(tmpImage)
@@ -43,6 +43,7 @@ img = resize.resize(img)
 
 #Segmentation image
 tmpImage = segmentation.segmentation(tmpImage);
+# tmpImage = segmentation.sobel_operation(img)
 
 #Apply the mask
 img = np.multiply(tmpImage,img)
