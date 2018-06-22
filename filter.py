@@ -9,13 +9,14 @@ import numpy as np
 import imageio
 
 #Size of mean filter applied in smoothing
-sizeMeanFilter = 23
+sizeMeanFilter = 3
+#a medida que aumenta o tamanho, confunde regioes e nao permite segmentacao correta
 
 #Size of sobel filter applied in sharpening
 sizeSobelFilter = 3
 
 #Size of log filter applied in sharpening
-sizeLogFilter = 5
+sizeLogFilter = 3
 
 #Sigma of Log
 sigmaLog = 1.6
@@ -152,7 +153,7 @@ def laplacianOfGaussian(img):
         for j in range(sizeLogFilter):
             laplacianFilter[i][j] = log(i-a,j-b)  
 
-    return img + convolution(img,laplacianFilter)
+    return convolution(img,laplacianFilter)
 
 #Sharpening with high boost
 def highBoost(img):
@@ -164,7 +165,7 @@ def highBoost(img):
     #Create mask
     mask = img-tempImage
 
-    return img + np.uint8(highBoostParameter*mask)
+    return np.uint8(highBoostParameter*mask)
 
 #Sharpening with sobel operator
 def sobel(img): 
@@ -190,4 +191,4 @@ def sobel(img):
     Fx = np.float64(Fx)
     Fy = np.float64(Fy)
     
-    return img + np.uint8(np.sqrt(np.power(Fx,2) + np.power(Fy,2)))
+    return np.uint8(np.sqrt(np.power(Fx,2) + np.power(Fy,2)))

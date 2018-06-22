@@ -34,8 +34,9 @@ tmpImage = filter.smoothing(tmpImage)
 tmpImage = filter.histogramEqualizing(tmpImage)
 
 #Pre-processing - Edge enhancement
-#tmpImage = filter.laplacianOfGaussian(tmpImage);
-img = filter.sobel(img)
+tmpImage = filter.laplacianOfGaussian(tmpImage);
+# img = filter.laplacianOfGaussian(img);
+img = filter.sobel(img);
 
 #Resizes image
 tmpImage = resize.resize(tmpImage)
@@ -43,10 +44,9 @@ img = resize.resize(img)
 
 #Segmentation image
 tmpImage = segmentation.segmentation(tmpImage);
-# tmpImage = segmentation.sobel_operation(img)
 
-#Apply the mask
-img = np.multiply(tmpImage,img)
+#Multiplying to get segmented image
+img = np.multiply(tmpImage, img)
 
 #Write image
 imageio.imwrite('out.jpg',img)
