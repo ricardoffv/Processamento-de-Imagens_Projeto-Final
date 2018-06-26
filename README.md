@@ -6,4 +6,4 @@ Com a propagação dos testes de facebook que não utilizam nenhuma técnica sof
 O projeto consiste em extrair características de imagens pré-estabelecidas, um dataset de 20 jogadores em cada uma das 6 posições diferentes (goleiro, zagueiro, lateral, meia, atacante e ponta), para comparar com as caractersticas de uma foto dada como entrada pelo usuário e, através de um algoritmo de classificação, indicar qual posição a pessoa da foto ocuparia em uma equipe de futebol.
 
 # Observações
-Para maiores informações sobre o projeto acesso o relatório que se encontra neste repositório.
+Para maiores informações sobre implementação, testes e propostas de solução, consulte o relatório que se encontra neste repositório.
