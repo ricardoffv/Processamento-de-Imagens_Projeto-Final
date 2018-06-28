@@ -26,7 +26,7 @@ def readImage():
 #Called for function that reads the image
 img = readImage()
 
-#temp image
+#temp image that will be used for extract a mask
 tmpImage = np.copy(img)
 
 #Pre-processing - Improving the image
@@ -35,8 +35,6 @@ tmpImage = filter.histogramEqualizing(tmpImage)
 
 #Pre-processing - Edge enhancement
 tmpImage = filter.laplacianOfGaussian(tmpImage);
-# img = filter.laplacianOfGaussian(img);
-img = filter.sobel(img);
 
 #Resizes image
 tmpImage = resize.resize(tmpImage)

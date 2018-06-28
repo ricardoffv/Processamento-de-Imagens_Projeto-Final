@@ -1,16 +1,22 @@
-# -*- coding: utf-8 -*-
+'''
+Authors
+Lucas Yudi Sugi 				Numero USP: 9293251
+Ricardo França Fernandes do Vale 	        Numero USP: 9293477
 
+Discipline
+SCC 0251 - Processamento de Imagens - 2018/1o sem - Prof. Moacir Ponti
+
+Title
+Apply the resize in an image
 '''
-Author: Lucas Yudi Sugi - 9293251
-Discipline: SCC0251_1Sem_2018 
-'''
+
+# -*- coding: utf-8 -*-
 
 import numpy as np
 import imageio
 
 #Size of mean filter applied in smoothing
 sizeMeanFilter = 3
-#a medida que aumenta o tamanho, confunde regioes e nao permite segmentacao correta
 
 #Size of sobel filter applied in sharpening
 sizeSobelFilter = 3
@@ -18,33 +24,36 @@ sizeSobelFilter = 3
 #Size of log filter applied in sharpening
 sizeLogFilter = 3
 
-#Sigma of Log
+#Sigma used in Log
 sigmaLog = 1.6
 
-#parameter that is used in gamma adjustment
+#Parameter that is used in gamma adjustment
 gamma = 0.7
 
-#parameter that us used in highBoost
+#Parameter that us used in highBoost
 highBoostParameter = 2
 
-#Improve the enhancement of image using histogram equalizing
+'''
+Improve the enhancement of image and convert to grayscale using histogram equalizing
+img: Image that we want to calculate
+'''
 def histogramEqualizing(img):
 
     #Max pixel in image
     maxPixel = 256;
     
-    #creating the histogram
+    #Creating the histogram for three channels
     histR = np.zeros(maxPixel,int)
     histG = np.zeros(maxPixel,int)
     histB = np.zeros(maxPixel,int)
     
-    #populating the histogram
+    #Populating the channels
     for i in range(maxPixel):
             histR[i] =  (img[:,:,0] == i).sum()
             histG[i] =  (img[:,:,1] == i).sum()
             histB[i] =  (img[:,:,2] == i).sum()
     
-    #accumulating pixels
+    #Accumulating pixels
     for i in range(1,maxPixel):
         histR[i] = histR[i] + histR[i-1]
         histG[i] = histG[i] + histG[i-1]
@@ -54,10 +63,10 @@ def histogramEqualizing(img):
     M = img.shape[0]
     N = img.shape[1]
     
-    #multiplicative factor
+    #Multiplicative factor
     mulFactor = (maxPixel-1)/(M*N)
     
-    #new image
+    #New image that is equalized
     newImg = np.zeros((M,N,3), dtype=np.uint8)
     
     #Apply the histogram equalizer
@@ -72,15 +81,25 @@ def histogramEqualizing(img):
     
     return newImg
 
-#Improve the enhancement of image using gamma adjustment
+'''
+Improve the enhancement of image using gamma adjustment
+img: Image that we want to enhancement
+'''
 def gammaAdjustment(img):
     
+    #Computhes the gamma adjustment
     img = np.power(img,gamma)
+
+    #Normalizing and convert
     img = np.uint8(((img-img.max())/(img.max()-img.min()))*255)
 
     return img
 
-#Apply the convolution
+'''
+Apply the convolution in an image
+img: Image that it will be used for convolution
+mask: Matrix with the mask that will be used for convolution
+'''
 def convolution(img,mask):
     
     #Extrac color channel
@@ -88,30 +107,30 @@ def convolution(img,mask):
     imgG = img[:,:,1]
     imgB = img[:,:,2]
 
-    #image in frequency domain
+    #Image in frequency domain
     imgR = np.fft.fft2(imgR)
     imgG = np.fft.fft2(imgG)
     imgB = np.fft.fft2(imgB)
    
-    #filter in frequency domain
+    #Filter in frequency domain
     mask = np.fft.fft2(mask)
 
-    #apply the convolution
+    #Apply the convolution
     imgR = np.multiply(mask,imgR)
     imgG = np.multiply(mask,imgG)
     imgB = np.multiply(mask,imgB)
    
-    #real part
+    #Get the real part
     imgR = np.real(np.fft.ifft2(imgR))
     imgG = np.real(np.fft.ifft2(imgG))
     imgB = np.real(np.fft.ifft2(imgB))
 
-    #normalizing
+    #Normalizing
     imgR = np.uint8(((imgR-imgR.min())/(imgR.max()-imgR.min()))*255)
     imgG = np.uint8(((imgG-imgG.min())/(imgG.max()-imgG.min()))*255)
     imgB = np.uint8(((imgB-imgB.min())/(imgB.max()-imgB.min()))*255)
     
-    #image with result
+    #Image with result
     imgResult = np.zeros([img.shape[0],img.shape[1],3],dtype=np.uint8)
     imgResult[:,:,0] = imgR
     imgResult[:,:,1] = imgG
@@ -119,14 +138,17 @@ def convolution(img,mask):
 
     return imgResult
 
-#Smoothing the image with mean filter
+'''
+Smoothing the image with mean filter
+img: Image that will be smoothed
+'''
 def smoothing(img):
 
     #Dimension of image
     M = img.shape[0]
     N = img.shape[1]
 
-    #creating mean filter in domain frequency
+    #Creating mean filter
     meanFilter = np.zeros([M,N])
     for i in range(sizeMeanFilter):
         for j in range(sizeMeanFilter):
@@ -134,28 +156,42 @@ def smoothing(img):
     
     return convolution(img,meanFilter)
 
-#Apply the equation of log
+'''
+Apply the equation of log
+x: Coordinate 'x' that we use for calculate log
+y: Coordinate 'y' that we use for calculate log
+'''
 def log(x,y):
     return (-1/(np.pi*np.power(sigmaLog,4))) * (1-((np.power(x,2)+np.power(y,2))/(2*np.power(sigmaLog,2))))* (np.exp((-np.power(x,2)-np.power(y,2))/(2*np.power(sigmaLog,2)))) 
 
-#Sharpening with laplacian of gaussian
+'''
+Sharpening with laplacian of gaussian
+img: Image that we use to apply log
+'''
 def laplacianOfGaussian(img):
     
     #Dimension of image
     M = img.shape[0]
     N = img.shape[1]
     
-    #create filter
+    #Create filter
     laplacianFilter = np.zeros([M,N])
+
+    #Region that we want to populate (Calculates the limit's image)
     a = (sizeLogFilter-1/2)
     b = (sizeLogFilter-1/2)
+
+    #Populating mask
     for i in range(sizeLogFilter):
         for j in range(sizeLogFilter):
             laplacianFilter[i][j] = log(i-a,j-b)  
 
     return convolution(img,laplacianFilter)
 
-#Sharpening with high boost
+'''
+Sharpening with high boost
+img: Image that we use to apply high boost
+'''
 def highBoost(img):
 
     #Blur image
@@ -167,7 +203,10 @@ def highBoost(img):
 
     return np.uint8(highBoostParameter*mask)
 
-#Sharpening with sobel operator
+'''
+Sharpening with sobel operator
+img: Image that we use to apply the sobel operator
+'''
 def sobel(img): 
     
     #Dimension of image
@@ -187,7 +226,7 @@ def sobel(img):
     Fx = convolution(img,Fx)
     Fy = convolution(img,Fy)
 
-    #convert
+    #Convert
     Fx = np.float64(Fx)
     Fy = np.float64(Fy)
     
