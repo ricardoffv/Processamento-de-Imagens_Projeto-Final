@@ -1,6 +1,14 @@
-#Nome: Lucas Yudi Sugi 						Numero USP: 9293251
-#Nome: Ricardo França Fernandes do Vale 	Numero USP: 9293477
-#SCC 0251 - Processamento de Imagens - 2018/1o sem - Prof. Moacir Ponti
+'''
+Authors
+Lucas Yudi Sugi 							Numero USP: 9293251
+Ricardo França Fernandes do Vale 	        Numero USP: 9293477
+
+Discipline
+SCC 0251 - Processamento de Imagens - 2018/1o sem - Prof. Moacir Ponti
+
+Title
+Building the dataset: reading images and extracting characteristics 
+'''
 
 import numpy as np
 import imageio
@@ -76,9 +84,10 @@ for i in range(len(files)):
 	datasetLine = np.concatenate((imgDescriptors, np.array([int(i/20)])), axis=0)
 
 	#Populating dataset, writing on file
-	print(files[i])
-	print(datasetLine)
-	dataset.write(str(datasetLine)+'\n')
+	for val in range(len(datasetLine)):
+		dataset.write(str(datasetLine[val])+' ')
+	dataset.write('\n')
+
 end = time.time()
 
 print("Processo de criacao do dataset durou "+str(end-start)+"s!")

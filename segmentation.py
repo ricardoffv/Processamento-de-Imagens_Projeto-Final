@@ -1,6 +1,6 @@
 '''
 Authors
-Lucas Yudi Sugi 				Numero USP: 9293251
+Lucas Yudi Sugi 				            Numero USP: 9293251
 Ricardo França Fernandes do Vale 	        Numero USP: 9293477
 
 Discipline
